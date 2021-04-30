@@ -4,6 +4,27 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>DummyFile</RootNamespace>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <StartupObject>Sub Main</StartupObject>
+    <OptionStrict>On</OptionStrict>
+    <Authors>Knuth Konrad</Authors>
+    <Company>BasicAware</Company>
+    <Copyright>2021 by Knuth Konrad</Copyright>
+    <AssemblyVersion>1.0.28.21120</AssemblyVersion>
+    <FileVersion>1.0.28.21878</FileVersion>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn />
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn />
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\zLIBRARY\BasicAware\libBAUtilCore\libBAUtilCore\libBAUtilCore.vbproj" />
+  </ItemGroup>
 
 </Project>

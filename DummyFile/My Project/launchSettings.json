@@ -2,7 +2,7 @@
   "profiles": {
     "DummyFile": {
       "commandName": "Project",
-      "commandLineArgs": "/n=10 /s=10kb /f=C:\\DATA\\VBNET\\PROJECT\\BASICAWARE\\.Core\\DummyFile\\DATA"
+      "commandLineArgs": "/n=1 /s=1kb /f=C:\\DATA\\VBNET\\PROJECT\\BASICAWARE\\.Core\\DummyFile\\DATA /lf /ll=72"
     }
   }
 }

@@ -9,8 +9,8 @@
     <Authors>Knuth Konrad</Authors>
     <Company>BasicAware</Company>
     <Copyright>2021 by Knuth Konrad</Copyright>
-    <AssemblyVersion>1.0.28.21120</AssemblyVersion>
-    <FileVersion>1.0.28.21878</FileVersion>
+    <AssemblyVersion>1.0.66.21125</AssemblyVersion>
+    <FileVersion>1.0.66.27829</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

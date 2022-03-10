@@ -1,4 +1,5 @@
 Imports System
+Imports System.IO
 Imports System.IO.Path
 ' Imports System.Diagnostics
 Imports System.Reflection
@@ -277,6 +278,10 @@ Module Program
 
    End Sub
 
+   ''' <summary>
+   ''' Create a file with a random file name and fill it with the previously created random (text) content.
+   ''' </summary>
+   ''' <param name="data">Random file creation location</param>
    Public Async Sub ThdCreateFile(ByVal data As Object)
 
       Dim o As FilePropertyTYPEE
@@ -284,9 +289,12 @@ Module Program
 
       o = CType(data, FilePropertyTYPEE)
 
-      sFile = System.IO.Path.GetFileNameWithoutExtension(System.IO.Path.GetRandomFileName())
-      sFile = NormalizePath(o.FilePath) & sFile & "." & o.FileExtension
-      ' Console.WriteLine("File name: {0}", sFile)
+      Do
+         ' Make sure the file doesn't already exist
+         sFile = Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
+         sFile = NormalizePath(o.FilePath) & sFile & "." & o.FileExtension
+         ' Console.WriteLine("File name: {0}", sFile)
+      Loop Until FileExists(sFile) = False
 
       Using txtStream As New System.IO.StreamWriter(sFile)
          With txtStream
@@ -350,21 +358,6 @@ Module Program
 
       End If
 
-
-      'For i As Int32 = 0 To CType(lRealSize - 1, Int32)
-      '   Dim thisChar As Integer = r.Next(48, 122)
-      '   chars(i) = CType(Chr(thisChar), Char)
-      '   If bolAddLineBreaks = True AndAlso lLineLength > 0 Then
-      '      If i > 0 AndAlso (i Mod lLineLength - 1 = 0) Then
-      '         For j As Int32 = 1 To vbNewLine.Length
-      '            i += 1
-      '            chars(i) = CType(Mid(vbNewLine, j, 1), Char)
-      '         Next
-      '      End If
-      '   End If
-      'Next
-
-      'sContent = New String(chars)
       Return sContent
 
    End Function

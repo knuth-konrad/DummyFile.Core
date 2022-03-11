@@ -1,7 +1,6 @@
 Imports System
 Imports System.IO
 Imports System.IO.Path
-' Imports System.Diagnostics
 Imports System.Reflection
 Imports System.Threading
 
@@ -292,7 +291,7 @@ Module Program
       Do
          ' Make sure the file doesn't already exist
          sFile = Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
-         sFile = NormalizePath(o.FilePath) & sFile & "." & o.FileExtension
+         sFile = NormalizePath(o.FilePath, OSPathSeperator()) & sFile & "." & o.FileExtension
          ' Console.WriteLine("File name: {0}", sFile)
       Loop Until FileExists(sFile) = False
 
@@ -367,8 +366,7 @@ Module Program
    ''' </summary>
    Public Sub ShowHelp()
 
-      Dim s As String = String.Empty, sMsg As String = String.Empty
-
+      Dim s As String = String.Empty
 
       Using o As New CmdArgs
          s = o.DelimiterArgs

@@ -5,10 +5,10 @@ Imports System.Reflection
 Imports System.Threading
 
 Imports libBAUtilCore
-Imports libBAUtilCore.ConsoleUtil
-Imports libBAUtilCore.FilesystemUtil
-Imports libBAUtilCore.StringUtil
-Imports libBAUtilCore.Utils.CmdArgs
+Imports libBAUtilCore.ConsoleHelper
+Imports libBAUtilCore.FilesystemHelper
+Imports libBAUtilCore.StringHelper
+Imports libBAUtilCore.Utils.Args
 
 Module Program
 
@@ -26,8 +26,8 @@ Module Program
    Sub Main(args As String())
 
       ' Application intro
-      ConHeadline(Assembly.GetEntryAssembly())
-      ConCopyright()
+      ConsoleHelper.AppIntro(Assembly.GetEntryAssembly())
+      ConsoleHelper.AppCopyright()
 
       ' ** Parse the command line parameters **
 
@@ -206,7 +206,7 @@ Module Program
 
       ' *** Echo the CLI parameters
       Console.WriteLine("# of files    : {0}", lFiles.ToString)
-      Console.WriteLine("File size     : {0} {1}", lOriginalSize.ToString, sUnit)
+      Console.WriteLine("File size     : {0} {1}", lOriginalSize.ToString, sUnit.ToUpper)
       Console.WriteLine("File extension: {0}", sFileExt)
       Console.Write("Folder        : {0}", sPath)
       ' If path is a relative path, display the full path also
@@ -291,7 +291,7 @@ Module Program
       Do
          ' Make sure the file doesn't already exist
          sFile = Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
-         sFile = NormalizePath(o.FilePath, OSPathSeperator()) & sFile & "." & o.FileExtension
+         sFile = NormalizePath(o.FilePath) & sFile & "." & o.FileExtension
          ' Console.WriteLine("File name: {0}", sFile)
       Loop Until FileExists(sFile) = False
 

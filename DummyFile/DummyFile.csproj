@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject>DummyFile.Program</StartupObject>
     <AssemblyVersion>1.0.6.21111</AssemblyVersion>
     <FileVersion>1.0.6.23272</FileVersion>

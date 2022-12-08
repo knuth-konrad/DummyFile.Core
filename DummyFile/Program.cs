@@ -56,11 +56,12 @@ namespace DummyFile
     // this is for  CreateRandomStringOfLength()
     static Random r;
 
-    struct FilePropertyTYPEE
+    struct FilePropertyTYPE
     {
       public string FilePath;
       public string FileExtension;
       public string FileContents;
+      public string FilePrefix;
     }
     static int Main(string[] args)
     {
@@ -79,9 +80,10 @@ namespace DummyFile
       // /lf - Create files with line feeds (CrLf).
       // /ll - Line length (number of characters). Can only be used in conjunction with /lf.
       // /fe - File extension. Defaults to 'tmp'.
+      // /fp - File (name) prefix.
 
 
-      List<string> paramListAll = new List<string>() { "n", "s", "f", "fe", "lf", "ll" };
+      List<string> paramListAll = new List<string>() { "n", "s", "f", "fe", "fp", "lf", "ll" };
       List<string> paramListMandatory = new List<string>() { "n", "s" };
 
       CmdArgs cmd = new CmdArgs(paramListAll);
@@ -124,14 +126,14 @@ namespace DummyFile
       }
 
       // Size of each file, sSize = actual size, sUnit = size of lUnit, e.g. "kb", lTimes = unit multiplier, e.g. "kb" = 1024
-      string sTemp = String.Empty;
-      string sSize = String.Empty;
-      string sUnit = String.Empty;
+      String sTemp = String.Empty;
+      String sSize = String.Empty;
+      String sUnit = String.Empty;
       UInt64 lTimes = 0;
 
       try
       {
-        sTemp = (string)cmd.GetValueByName("s");
+        sTemp = (String)cmd.GetValueByName("s");
       }
       catch (Exception)
       {
@@ -270,11 +272,22 @@ namespace DummyFile
         WriteIndent(String.Format("!!!  Unable to resolve full path for {0}", sPath), 2);
       }
 
+      // ** File name prefix?
+      String sFilePrefix = "";
+      if (cmd.HasParameter("fp"))
+      {
+        sTemp = cmd.GetValueByName("fp").ToString().Trim().Replace(vbQuote(), String.Empty);
+        if (sTemp.Length > 0)
+        { sFilePrefix = sTemp; }
+      }
+
+
 
       // *** Echo the CLI parameters
       Console.WriteLine("# of files    : {0}", lFiles.ToString());
       Console.WriteLine("File size     : {0} {1}", lOriginalSize.ToString(), sUnit.ToUpper());
       Console.WriteLine("File extension: {0}", sFileExt);
+      Console.WriteLine("File prefix   : {0}", sFilePrefix);
       Console.Write("Folder        : {0}", sPath);
       // If path is a relative path, display the full path also
       if (NormalizePath(sPath).ToLower() == NormalizePath(sPathFull).ToLower())
@@ -301,7 +314,6 @@ namespace DummyFile
       }
       catch (ArgumentOutOfRangeException)
       {
-
         WriteIndent("!!! Can't generate a file of this size, aborting ...", 2);
         return (Int32)AppResult.ContentCreationFailed;
       }
@@ -320,11 +332,12 @@ namespace DummyFile
 
 
       // *** Create the temp. files
-      FilePropertyTYPEE o = new FilePropertyTYPEE();
+      FilePropertyTYPE o = new FilePropertyTYPE();
 
       o.FilePath = sPathFull;
       o.FileExtension = sFileExt;
       o.FileContents = sContent;
+      o.FilePrefix = sFilePrefix;
 
       Console.Write("Creating {0} file(s) ... ", lFiles);
       Execution_Start.Start();
@@ -386,7 +399,7 @@ namespace DummyFile
       }
 
       // Add additional space for line breaks
-      string sLine = String.Empty;
+      String sLine = String.Empty;
       if (lRows > 1)
       { sLine = Space(lLineLength); }
       else
@@ -395,7 +408,7 @@ namespace DummyFile
         lLineLength = (UInt32)lRealSize;
       }
 
-      string sContent = String.Empty;
+      String sContent = String.Empty;
 
       Int32 seed = -1;
       for (Int32 i = 1; i <= lRows; i++)
@@ -421,9 +434,7 @@ namespace DummyFile
           sContent += CreateRandomStringOfLength((UInt32)(lLineLength - sContent.Length), ref seed, bolAddLineBreaks);
         }
       }
-
       return sContent;
-
     }
 
     static string CreateRandomStringOfLength(UInt32 stringLength, ref Int32 seed, bool addLinebreak = false)
@@ -487,6 +498,9 @@ namespace DummyFile
       Console.WriteLine(@"           DummyFile {0}n=10 {0}s=12MB {0}f=c:\temp {0}lf {0}ll=72 {0}fe=txt", s);
       Console.WriteLine(@"              - Create 10 files with the file extension 'txt' in the folder c:\temp with a size of 12MB each,");
       Console.WriteLine("                add line feed(s). Line length should be 72 characters.");
+      Console.WriteLine(@"           DummyFile {0}n=10 {0}s=12MB {0}f=c:\temp {0}lf {0}ll=72 {0}fe=txt {0}fp=tmp_", s);
+      Console.WriteLine(@"              - Create 10 files with a fixed prefix of 'tmp_' and the file extension 'txt' in the folder c:\temp");
+      Console.WriteLine("                 with a size of 12MB each, add line feed(s). Line length should be 72 characters.");
 
       BlankLine();
       Console.WriteLine("Parameters");
@@ -497,6 +511,7 @@ namespace DummyFile
       Console.WriteLine("{0}lf - Create files with line feeds (CrLf).", s);
       Console.WriteLine("{0}ll - Line length (number of characters). Can only be used in conjunction with {0}lf.", s);
       Console.WriteLine("{0}fe - File extension. Defaults to 'tmp'.", s);
+      Console.WriteLine("{0}fp - Fixed file name prefix.", s);
 
       BlankLine();
       Console.WriteLine("Allowed file size units for parameter {0}s are:", s);
@@ -517,15 +532,15 @@ namespace DummyFile
     public static async void ThdCreateFile(Object data)
     {
 
-      FilePropertyTYPEE o;
+      FilePropertyTYPE o;
       string sFile = String.Empty;
 
-      o = (FilePropertyTYPEE)data;
+      o = (FilePropertyTYPE)data;
 
       do
       {
         // Make sure the file doesn't already exist
-        sFile = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+        sFile = o.FilePrefix + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
         sFile = NormalizePath(o.FilePath) + sFile + "." + o.FileExtension;
       }
       while (FileExists(sFile));

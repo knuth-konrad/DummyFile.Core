@@ -383,7 +383,7 @@ namespace DummyFile
     /// <param name="lRealSize">Size in bytes</param>
     /// <param name="bolAddLineBreaks">Artificially add line breaks</param>
     /// <param name="lLineLength">Line length, if <paramref name="bolAddLineBreaks"/> is <see langword="true"/>.</param>
-    /// <returns>Plan text (file)-like string</returns>
+    /// <returns>Plain text (file)-like string</returns>
     static string CreateRandomFileContent(Int32 lRealSize, bool bolAddLineBreaks, UInt32 lLineLength)
     {
 
@@ -541,7 +541,7 @@ namespace DummyFile
       {
         // Make sure the file doesn't already exist
         sFile = o.FilePrefix + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-        sFile = NormalizePath(o.FilePath) + sFile + "." + o.FileExtension;
+        sFile = NormalizePath(o.FilePath, GetDefaultPathDelimiterForOS()) + sFile + "." + o.FileExtension;
       }
       while (FileExists(sFile));
 

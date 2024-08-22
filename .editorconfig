@@ -8,7 +8,7 @@ insert_final_newline = true
 charset = utf-8
 
 # VB6 source files
-[*.{bas,cls,frm,vbs,ini}]
+[*.{bas,cls,frm}]
 end_of_line = crlf
 insert_final_newline = true
 charset = latin1

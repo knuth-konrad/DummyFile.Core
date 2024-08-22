@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DummyFile": {
+      "commandName": "Project",
+      "commandLineArgs": "/n=5 /s=100 /f=..\\"
+    }
+  }
+}
